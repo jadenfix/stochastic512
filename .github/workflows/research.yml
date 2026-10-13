@@ -1,0 +1,14 @@
+name: Research end-to-end
+on: [push, pull_request]
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v
+      - run: python stochastic512.py --output artifacts
+      - uses: actions/upload-artifact@v4
+        with: {name: research-receipt, path: artifacts/}
